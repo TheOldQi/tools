@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
+
+<!-- 这是CheckStyle配置文件===作者：齐霞飞
+     有PackageName配置项针对不同的工程检查包名是否合法，该配置文件是针对收付费平台项目
+-->
+<!-- 固定名称的root节点Checker -->
+<module name="Checker">
+    <!-- ***每个module都可以配置若干property属性，其配置会被子module继承 -->
+
+    <!-- 报警级别，任何module都有这个属性，子module会继承这个配置，和css相似的就近原则，可以设置为ignore,info,warning,error -->
+    <property name="severity" value="warning"/>
+    <!--  检查每个包都必须含有package-info.java文件
+    <module name="JavadocPackage"/>-->
+    <!-- 文件长度不超过2000行,default2000行 -->
+    <module name="FileLength">
+        <property name="max" value="2000"/>
+    </module>
+
+    <!-- ***TreeWalker子节点，它是用来检查文件内内容的 -->
+    <module name="TreeWalker">
+        <!-- 一个tab（\t）占用多少个空格，默认是8 -->
+        <property name="tabWidth" value="4"/>
+        <!-- 控制TreeWalker都检查哪些扩展名的文件，默认是java，不设置该属性即检查所有文件 -->
+        <property name="fileExtensions" value="java"/>
+        <!-- 包名的检测,必须以com.le.jr.trade.feepay工程名命名,且必须全小写,$\{projectname\} -->
+<!--        <module name="PackageName">-->
+<!--            <property name="format" value="com\.le\.jr\.trade\.feepay\.[a-z]+(\.[a-z][a-z0-9]+)*$"/>-->
+<!--        </module>-->
+
+        <!-- 1.检查命名规范-驼峰 -->
+        <module name="AbbreviationAsWordInName">
+            <property name="severity" value="error"/>
+            <!-- 监视的类型，需要是CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF,
+             ANNOTATION_FIELD_DEF, PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, ENUM_CONSTANT_DEF 的子集
+             默认是CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF, PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF-->
+            <property name="tokens"
+                      value="CLASS_DEF,INTERFACE_DEF,ENUM_DEF,ANNOTATION_DEF,ANNOTATION_FIELD_DEF,PARAMETER_DEF,VARIABLE_DEF,METHOD_DEF"/>
+            <property name="ignoreFinal" value="true"/> <!-- 忽略final域，默认是true -->
+            <property name="ignoreStatic" value="true"/> <!-- 忽略static域，默认是true -->
+            <property name="ignoreOverriddenMethods" value="true"/> <!-- 忽略@Override标识的方法名，默认是true，因为重写方法名字通常是一样的 -->
+            <property name="allowedAbbreviationLength" value="1"/> <!-- 在检查驼峰时最大允许连续的几个大写字母 -->
+            <property name="allowedAbbreviations" value="XML,URL,SPV,PV,DB,MQ,VO,DTO,PO,DTS,UID,API,UPS,RSA,CMS,YN,UUID,QGFWF,QGTGF,QGQDF,RR,CS"/> <!-- 忽略驼峰检查的单词 -->
+            <message key="abbreviation.as.word"
+                     value="名称''{0}''不符合驼峰规则，有超过''{1}''个连续大写字母"/> <!-- 重写验证不通过的错误提示,value必须符合java.text.MessageFormat风格 -->
+        </module>
+
+        <!-- 2.抽象类名称检查 -->
+        <module name="AbstractClassName">
+            <property name="severity" value="warning"/>
+            <!-- 校验名字检查正则表达式，默认^Abstract.+$ -->
+            <property name="format" value="^Abstract.+$"/>
+            <!-- 是否忽略abstract修饰符，默认false，若为false，会检查若名称符合format但是没有修饰符的情况 -->
+            <property name="ignoreModifier" value="false"/>
+            <!-- 是否忽略名称检查，默认false -->
+            <property name="ignoreName" value="false"/>
+            <message key="illegal.abstract.class.name" value="抽象类名 ''{0}'' 不符合正则： ''{1}''"/>
+            <message key="no.abstract.class.modifier" value="类 ''{0}'' 缺少abstract修饰符"/>
+        </module>
+
+        <!-- 3.注解位置检查 -->
+        <module name="AnnotationLocation">
+            <!-- 检查类型，限制 CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF, PARAMETER_DEF, ANNOTATION_DEF, TYPECAST,
+                LITERAL_THROWS, IMPLEMENTS_CLAUSE, TYPE_ARGUMENT, LITERAL_NEW, DOT, ANNOTATION_FIELD_DEF的子集，
+                默认是 CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF-->
+            <property name="tokens" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
+            <!-- 允许一行多个注解 -->
+            <property name="allowSamelineMultipleAnnotations" value="false"/>
+            <!-- 允许非参数类注解和被注解代码同一行 -->
+            <property name="allowSamelineSingleParameterlessAnnotation" value="false"/>
+            <!-- 允许参数类注解和被注解代码同一行 -->
+            <property name="allowSamelineParameterizedAnnotation" value="false"/>
+            <message key="annotation.location" value="注解 ''{0}'' 缩进了{1}个缩进符，应为：{2}个。"/>
+            <message key="annotation.location.alone" value="注解 ''{0}'' 应独占一行"/>
+        </module>
+
+        <!-- 4.注解代码风格检查 -->
+        <module name="AnnotationUseStyle">
+            <!-- 注解元素风格，默认值compact_no_array，共有四种，expanded：注解元素用value=这种格式，compact注解元素使用{"".""}格式，
+                compact_no_array注解元素使用""，ignore -->
+            <property name="elementStyle" value="compact_no_array"/>
+            <!-- 注解是否必须使用（）结尾（就算注解不需要参数），默认值是never，共有三种值：always，never，ignore -->
+            <property name="closingParens" value="never"/>
+            <!-- 当注解有多个参数的时候，是否最后一个参数后面紧跟一个逗号，默认值是never，共有三种值：always，never，ignore -->
+            <property name="trailingArrayComma" value="never"/>
+            <message key="annotation.incorrect.style" value="注解必须符合''{0}''风格"/>
+            <message key="annotation.parens.missing" value="注解必须关闭小括号"/>
+            <message key="annotation.parens.present" value="注解不能关闭小括号"/>
+            <message key="annotation.trailing.comma.missing" value="注解数组最后元素尾部必须附加逗号&quot;,&quot;"/>
+            <message key="annotation.trailing.comma.present" value="注解数组最后元素尾部不应附加逗号&quot;,&quot;"/>
+        </module>
+
+        <!-- 5.匿名内部类长度检查 -->
+        <module name="AnonInnerLength">
+            <!-- 匿名内部类最大行数配置，默认值20 -->
+            <property name="max" value="40"/>
+            <message key="maxLen.anonInner" value="匿名内部类{0,number,integer}行，最多允许 {1,number,integer}行"/>
+        </module>
+
+        <!-- 6.检查数组结尾是否有逗号（方便添加） -->
+        <module name="ArrayTrailingComma">
+            <message key="array.trailing.comma" value="数组尾元素后应有逗号'',''"/>
+        </module>
+
+        <!-- 7.检查数组代码风格-->
+        <module name="ArrayTypeStyle">
+            <!-- Java风格的数组还是C语言风格的数组，默认true-Java，当value="false"时是C语言风格 -->
+            <property name="javaStyle" value="true"/>
+            <message key="array.type.style" value="数组中括号位置不符合代码习惯。"/>
+        </module>
+
+        <!-- 8.JavaDoc 注释标签顺序 -->
+        <module name="AtclauseOrder">
+            <!-- 检查目标，所有token都可以，默认是CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF -->
+            <property name="target" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
+            <!-- 标签顺序，默认@author,@version,@param,@return,@throws,@exception,@see,@since,@serial,@serialField,@serialData,@deprecated -->
+            <property name="tagOrder" value="@author,@version,@since,@param,@return,@throws,@exception,@see,@serial,@serialField,@serialData,@deprecated"/>
+            <message key="at.clause.order" value="@标签应按以下顺序出现：''{0}''"/>
+            <message key="javadoc.missed.html.close" value="Javadoc 第 {0} 个字符解析错误。缺少 HTML 闭合标签： ''{1}''。 有时这代表前一标签未闭合。"/>
+            <message key="javadoc.parse.error" value="Javadoc 第 {0} 个字符解析错误。详情： {1}"/>
+            <message key="javadoc.parse.rule.error" value="Javadoc 第 {0} 个字符解析错误。解析 {2} ，详情： {1}"/>
+            <message key="javadoc.unrecognized.antlr.error" value="Javadoc 第 {0} 个字符解析错误。ANTLR 解析器未知错误： {1}" />
+            <message key="javadoc.wrong.singleton.html.tag" value="Javadoc 第 {0} 个字符解析错误。HTML 标签： {1} 不需要闭合。"  />
+        </module>
+
+        <!-- 9.避免使用unicode转义字符 -->
+        <module name="AvoidEscapedUnicodeCharacters">
+            <property name="allowEscapesForControlCharacters"    value="false"/>
+            <property name="allowByTailComment"    value="false"/>
+            <property name="allowIfAllCharactersEscaped"    value="false"/>
+            <property name="allowNonPrintableEscapes"    value="false"/>
+            <message key="forbid.escaped.unicode.char" value="不要使用Unicode转义字符"/>
+        </module>
+
+        <!-- 10.避免使用三目运算符
+        <module name="AvoidInlineConditionals">
+            <message key="inline.conditional.avoid" value="尽量不要使用三目运算符"/>
+        </module> -->
+
+        <!-- 11.避免使用嵌入式代码块 -->
+        <module name="AvoidNestedBlocks">
+            <!-- 避免在switch的case块中使用代码块{}，默认false -->
+            <property name="allowInSwitchCase" value="false"/>
+            <message key="block.nested" value="尽量不要使用嵌入代码块"/>
+        </module>
+
+        <!-- 12.避免import * -->
+        <module name="AvoidStarImport">
+            <property name="severity" value="error"/>
+            <!-- 哪些包是允许用*引用的，注意这里不是递归的，子包不会继承这个校验规则，默认的话不要这个属性-->
+            <property name="excludes" value="java.math,java.util,com.le.jr.trade.feepay.common.constants.ErrorMessage,com.le.jr.trade.feepay.service.ups.enums.UpsParamKeyEnum,com.le.jr.trade.feepay.domain.enums.FeePayFlagEnum,com.le.jr.trade.feepay.domain.enums.LechangeCommitTargetEnum"/>
+            <!-- import跳过检查，默认false -->
+            <property name="allowClassImports" value="false"/>
+            <!-- import static  跳过检查，默认false -->
+            <property name="allowStaticMemberImports" value="false"/>
+            <message key="import.avoidStar" value="不要使用 ''.*'' 形式的导入，有可能导致意想不到的错误发生 - {0} 。"/>
+        </module>
+
+        <!-- 13.避免import static -->
+        <module name="AvoidStaticImport">
+            <property name="severity" value="error"/>
+            <!-- 跳过检查的类，注意，不是包！可以用* -->
+            <property name="excludes" value="com.le.jr.trade.feepay.common.constants.ErrorMessage.*,com.le.jr.trade.feepay.domain.enums.YNEnum.*,com.le.jr.trade.feepay.service.ups.enums.UpsParamKeyEnum.*,com.le.jr.trade.feepay.domain.enums.FeePayFlagEnum.*,com.le.jr.trade.feepay.domain.enums.LechangeCommitTargetEnum.*"/>
+            <message key="import.avoidStatic" value="import static可能导致语意不明 - {0}"/>
+        </module>
+
+        <!-- 14.布尔表达式不要太复杂
+        <module name="BooleanExpressionComplexity">
+             检查目标， LAND, BAND, LOR, BOR, BXOR的子集，默认LAND, BAND, LOR, BOR, BXOR
+             <property name="tokens" value="LAND, BAND, LOR, BOR, BXOR"/>
+             一个表达式里最多几个&&或||
+            <property name="max" value="3"/>
+             <message key="booleanExpressionComplexity" value="布尔表达式复杂度： {0,number,integer} （最多： {1,number,integer} ）。"/>
+        </module> -->
+
+        <!-- 15.catch快的异常参数名称格式校验 -->
+        <module name="CatchParameterName" >
+            <!-- 异常变量名称正则校验，默认"^(e|t|ex|[a-z][a-z][a-zA-Z]+)$" -->
+            <property name="format" value="^(e|t|ex|[a-z][a-z][a-zA-Z]+)$"/>
+            <message key="name.invalidPattern" value="名称 ''{0}'' 必须匹配表达式： ''{1}''"/>
+        </module>
+
+        <!-- 16.类抽象耦合度，参数、返回值
+        <module name="ClassDataAbstractionCoupling">
+            允许引用最大数量，默认7
+            <property name="max" value="7"/>
+            <property name="excludedClasses" value="boolean, byte, char, double, float, int, long, short, void, Boolean, Byte, Character, Double, Float, Integer, Long, Short, Void, Object, Class, String, StringBuffer, StringBuilder, ArrayIndexOutOfBoundsException, Exception, RuntimeException, IllegalArgumentException, IllegalStateException, IndexOutOfBoundsException, NullPointerException, Throwable, SecurityException, UnsupportedOperationException, List, ArrayList, Deque, Queue, LinkedList, Set, HashSet, SortedSet, TreeSet, Map, HashMap, SortedMap, TreeMap,Date,BizException,ProcessResult"/>
+            <property name="excludeClassesRegexps" value="^$"/>
+            <property name="excludedPackages" value="java.math"/>
+            <message key="classDataAbstractionCoupling" value="类数据的抽象耦合： {0,number,integer} （最多： {1,number,integer}），引用类： {2}。"/>
+        </module> -->
+
+        <!-- 17.类分散耦合度，
+        <module name="ClassFanOutComplexity">
+            <property name="max" value="20"/>
+             <property name="excludedClasses" value="boolean, byte, char, double, float, int, long, short, void, Boolean, Byte, Character, Double, Float, Integer, Long, Short, Void, Object, Class, String, StringBuffer, StringBuilder, ArrayIndexOutOfBoundsException, Exception, RuntimeException, IllegalArgumentException, IllegalStateException, IndexOutOfBoundsException, NullPointerException, Throwable, SecurityException, UnsupportedOperationException, List, ArrayList, Deque, Queue, LinkedList, Set, HashSet, SortedSet, TreeSet, Map, HashMap, SortedMap, TreeMap"/>
+             <property name="excludeClassesRegexps" value="^$"/>
+             <property name="excludedPackages" value="java.math"/>
+             <message key="classFanOutComplexity" value="类的分散复杂度： {0,number,integer} （最多： {1,number,integer}）。"/>
+        </module>-->
+
+        <!-- 18.类名规范 -->
+        <module name="ClassTypeParameterName">
+            <property name="format" value="^[A-Z]$"/>
+            <message key="name.invalidPattern" value="名称 ''{0}'' 必须匹配表达式： ''{1}'' "/>
+        </module>
+
+        <!-- 19.注释的缩进 -->
+        <module name="CommentsIndentation">
+            <!--  SINGLE_LINE_COMMENT, BLOCK_COMMENT_BEGIN的子集 -->
+            <property name="tokens" value="BLOCK_COMMENT_BEGIN"/>
+            <message key="comments.indentation.block" value="注释应与第{0}行代码同样缩进{2}个缩进符，而不是{1}个。"/>
+            <message key="comments.indentation.single" value="注释应与第{0}行代码同样缩进{2}个缩进符，而不是{1}个。"/>
+        </module>
+
+        <!-- 20.检查常量的标识符（static final） -->
+        <module name="ConstantName">
+            <property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+            <!-- PUBLIC 变量是否检查 -->
+            <property name="applyToPublic"    value="true"/>
+            <!-- PROTECTED 变量是否检查 -->
+            <property name="applyToProtected"    value="true"/>
+            <!-- PACKAGE 变量是否检查 -->
+            <property name="applyToPackage"    value="true"/>
+            <!-- PRIVATE 变量是否检查 -->
+            <property name="applyToPrivate"    value="true"/>
+            <message key="name.invalidPattern" value="名称 ''{0}'' 必须匹配表达式： ''{1}'' "/>
+        </module>
+
+        <!-- 21.Equals重写检查，如果类实现了一个equals（Test test）方法，要求它必须重写了equals(Object obj)方法-->
+        <module name="CovariantEquals">
+            <message key="covariant.equals" value="重载''equals()''方法时，必须确保重写了''eauals(java.lang.Object)'方法。"/>
+        </module>
+
+        <!-- 22.Import分组、顺序检查，当前配置符合idea风格 -->
+        <module name="CustomImportOrder">
+            <!-- 定义顺序规则，内容是用户定义的，默认不配置 -->
+            <property name="customImportOrderRules"
+                      value="THIRD_PARTY_PACKAGE###SPECIAL_IMPORTS###STANDARD_JAVA_PACKAGE###STATIC"/>
+            <!-- 代表 THIRD_PARTY_PACKAGE ，默认.*-->
+            <property name="thirdPartyPackageRegExp" value=".*"/>
+            <!-- 代表 SPECIAL_IMPORTS ，默认^$-->
+            <property name="specialImportsRegExp" value="^javax\."/>
+            <!-- 代表 STANDARD_JAVA_PACKAGE ，默认^(java|javax)\. -->
+            <property name="standardPackageRegExp" value="^java\."/>
+            <!-- 强制按照字母顺序排列，取字母的ASCII码，默认false -->
+            <property name="sortImportsInGroupAlphabetically" value="true"/>
+            <!-- 在不同的分组之间使用空行分隔，默认true -->
+            <property name="separateLineBetweenGroups" value="false"/>
+            <message key="custom.import.order" value="import {2} 位置错误。应位于 ''{0}'' 组，此行应为： ''{1}''。"/>
+            <message key="custom.import.order.lex" value="import {0} 应在 {1} 之前。"/>
+            <message key="custom.import.order.line.separator" value="import {0} 应该与上面的导入组分隔一个空行。"/>
+        </module>
+
+        <!-- 23.检查分支的复杂度，复杂度等于代码中决定的点数+1，决定的点包含 if, while , do, for, ?:, catch , switch, case,&&，||  -->
+        <module name="CyclomaticComplexity">
+            <!--  LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_CASE, LITERAL_CATCH, QUESTION, LAND, LO的子集
+            默认值： LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_CASE, LITERAL_CATCH, QUESTION, LAND, LOR -->
+            <property name="tokens" value="LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_CASE, LITERAL_CATCH, QUESTION, LAND, LOR"/>
+            <!-- 最大的分支可能性，默认值10 -->
+            <property name="max" value="15"/>
+            <!-- 是否把switch当成一个可能性，默认值false -->
+            <property name="switchBlockAsSingleDecisionPoint" value="true"/>
+            <message key="cyclomaticComplexity" value="代码块可能性复杂度： {0,number,integer} （最多： {1,number,integer} ）。"/>
+        </module>
+
+        <!-- 24.类的字段、方法、构造函数等的定义顺序检查，按static-实例变量-构造器-方法，再按public-protected-package-private的顺序 -->
+        <module name="DeclarationOrder">
+            <property name="severity" value="info"/>
+            <!-- 是否忽略构造函数 -->
+            <property name="ignoreConstructors" value="true"/>
+            <!-- 是否忽略方法 -->
+            <property name="ignoreModifiers" value="false"/>
+            <message key="declaration.order.access" value="属性访问器定义顺序错误"/>
+            <message key="declaration.order.constructor" value="构造函数定义顺序错误"/>
+            <message key="declaration.order.instance" value="实例属性定义顺序错误。"/>
+            <message key="declaration.order.static" value="静态属性定义顺序错误。"/>
+        </module>
+
+        <!-- 25.检查switch格式，default是否是最后一个 -->
+        <module name="DefaultComesLast">
+            <!-- 如果default下面还有case是否允许,默认false -->
+            <property name="skipIfLastAndSharedWithCase" value="false"/>
+            <message key="default.comes.last" value="default 应为 switch 块最后一个元素。"/>
+            <message key="default.comes.last.in.casegroup" value="默认值应为案例组中的最后一个标签。"/>
+        </module>
+
+        <!-- 26.检查token冲突，只有在引用其他checker时有用
+        <module name="DescendantToken">-->
+
+        <!-- 27.检查有新的类或方法被添加，只有在开发jar包的时候才用到
+        <module name="DesignForExtension"/
+        -->
+
+        <!-- 28.检查空代码块
+        <module name="EmptyBlock">
+            需要代码块中存在一条命令或注释，默认statement-命令，还可以是text-注释文本
+            <property name="option" value="text"/>
+            LITERAL_WHILE, LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_DO, LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, INSTANCE_INIT, STATIC_INIT, LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_CASE, LITERAL_DEFAULT, ARRAY_INIT的子集
+            默认：LITERAL_WHILE, LITERAL_TRY, LITERAL_FINALLY, LITERAL_DO, LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, INSTANCE_INIT, STATIC_INIT, LITERAL_SWITCH, LITERAL_SYNCHRONIZED
+            <property name="tokens" value="LITERAL_WHILE,LITERAL_TRY,LITERAL_FINALLY,LITERAL_DO,LITERAL_IF,LITERAL_ELSE,LITERAL_FOR,INSTANCE_INIT,STATIC_INIT, LITERAL_SWITCH,LITERAL_SYNCHRONIZED"/>
+            <message key="block.empty" value="空 {0} 块。"/>
+            <message key="block.noStatement" value="块中应至少有一条代码语句。"/>
+        </module>        -->
+
+        <!-- 29.检查空catch块 -->
+        <module name="EmptyCatchBlock">
+            <property name="commentFormat" value="This is expected"/>
+            <property name="exceptionVariableName" value="myException"/>
+        </module>
+    </module>
+</module>
