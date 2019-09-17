@@ -21,7 +21,7 @@ import java.util.*;
  * @since java 1.7.0
  */
 @Slf4j
-public class JedisClient {
+public class JedisClient{
 
     private JedisCluster jedisCluster;
 

@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -49,7 +50,7 @@ public class JedisSerialNo {
     @Value("${jedis.serialNo.machineNum:10}")
     private int machineNum;
 
-    private Random random;
+    private ThreadLocalRandom random = ThreadLocalRandom.current();
 
     /**
      * 获取下一个序列号，前序由14位年月日时分秒组成.
