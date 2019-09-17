@@ -1,9 +1,7 @@
 package com.xiafei.tools.lru;
 
-import com.xiafei.tools.common.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,19 +24,9 @@ public class LruLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
      */
     private int capacity;
     /**
-     * 为这个缓存起个名字，打印日志用，若未定义则采用初始化时间做名字.
+     * 为这个缓存起个名字，打印日志用.
      */
-    private String name = "未定义" + DateUtils.getYMDHMSWithSeparate().format(new Date());
-
-    /**
-     * 初始化一个lru缓存，指定缓存大小.
-     *
-     * @param capacity 缓存大小
-     */
-    public LruLinkedHashMap(final int capacity) {
-        super(capacity > 16 ? capacity >>> 1 : 16, 0.75f, true);
-        this.capacity = capacity;
-    }
+    private String name;
 
     /**
      * 初始化一个lru缓存，指定缓存大小和名字.
@@ -58,6 +46,16 @@ public class LruLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
             return size() > capacity;
         }
         return false;
+    }
+
+    @Override
+    public synchronized V get(Object k) {
+        return super.get(k);
+    }
+
+    @Override
+    public synchronized V put(K k, V v) {
+        return super.put(k, v);
     }
 
 
