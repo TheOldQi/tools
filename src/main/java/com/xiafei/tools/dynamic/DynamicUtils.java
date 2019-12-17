@@ -25,7 +25,7 @@ import java.util.UUID;
 public class DynamicUtils {
 
 
-    private static final Map<String, Map<String, Object>> POOL = new LruLinkedHashMap<>(10000);
+    private static final Map<String, Map<String, Object>> POOL = new LruLinkedHashMap<>(10000,"动态字节码");
     private static final String METHOD_KEY = "method";
     private static final String OBJECT_KEY = "object";
     private static final Object MUTEX = new Object();

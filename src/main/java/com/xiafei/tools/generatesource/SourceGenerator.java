@@ -83,6 +83,51 @@ public final class SourceGenerator {
 //        trade();
 //        securityCenter();
 //        opsLogsEtl();
+        wmsCenter();
+    }
+
+    private static void wmsCenter() {
+        final GenerateSourceParam param = new GenerateSourceParam();
+        param.setCommentsUser("齐霞飞");
+        param.setCommentsSince("JDK 1.8.0");
+        param.setCommentsVersion("1.0.0");
+        param.setDomainDirectory("C:\\code\\meicai\\wms-center\\wms-center-outbound-support\\src\\main\\java\\com\\sprucetec\\wms\\center\\outbound\\pos");
+        param.setDomainPackage("com.sprucetec.wms.center.outbound.pos");
+        param.setDomainSuffix("Po");
+        param.setMapperDirectory("C:\\code\\meicai\\wms-center\\wms-center-outbound-support\\src\\main\\resources\\com\\sprucetec\\wms\\center\\outbound\\mapper");
+        param.setDaoDirectory("C:\\code\\meicai\\wms-center\\wms-center-outbound-support\\src\\main\\java\\com\\sprucetec\\wms\\center\\outbound\\mapper");
+        param.setDaoPackage("com.sprucetec.wms.center.outbound.mapper");
+        // is cover ori file's content
+        param.setCoverFile(true);
+        param.setJavaTime(false);
+        param.setLombok(false);
+        final String schema = "test_db";
+        final String jdbcUrl = MessageFormat.format(CON_STR_LOCAL_TEMPLATE, schema);
+        final String dbUser = DB_USER;
+        final String pwd = DB_USER_PWD;
+
+        final List<GenerateSourceParamItem> itemList = new ArrayList<>();
+
+//        GenerateSourceParamItem table1 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
+//                "task_type_def", schema,
+//                "TaskTypeDef", "任务类型定义表");
+//        itemList.add(table1);
+        GenerateSourceParamItem table2 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
+                "t_wmc_aps_cross_warehouse_process_quantity", schema,
+                "ApsCrossWarehouseProcessQuantity", "Aps越库加工集量表");
+        itemList.add(table2);
+//        GenerateSourceParamItem table3 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
+//                "log_data_template", schema,
+//                "LogData", "日志数据");
+//        itemList.add(table3);
+//
+//        GenerateSourceParamItem table4 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
+//                "log_data_group", schema,
+//                "LogDataGroup", "日志数据分组表");
+//        itemList.add(table4);
+
+        param.setItems(itemList);
+        exec(param);
     }
 
     private static void opsLogsEtl() {

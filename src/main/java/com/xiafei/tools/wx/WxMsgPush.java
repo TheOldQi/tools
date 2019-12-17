@@ -50,8 +50,8 @@ public class WxMsgPush {
 
     public static void main(String[] args) {
         final TemplateReq req = new TemplateReq();
-        req.setTouser("oS9pG4wKw_JVUYJAukMjqnLLQktA");
-        req.setTemplate_id("e3MJ92WtR-jnxKAkriPvFRYlORiNFAtnpd3q_1NNYoI");
+        req.setTouser("touser");
+        req.setTemplate_id("templateId");
         Map<String, Object> data = new HashMap<>();
         Map<String, Object> keyWord1 = new HashMap<>();
         keyWord1.put("value", "测试审核结果");
@@ -65,7 +65,7 @@ public class WxMsgPush {
         req.setData(data);
         req.setForm_id("1547461434925");
 
-        WxAccessToken.Resp Resp = WxAccessToken.getAccessToken("wxe64a21f09e3afe33", "fd62ce60ea3e8b967a1660ef1c2c8d19");
+        WxAccessToken.Resp Resp = WxAccessToken.getAccessToken("appId", "secret");
         String s = pushTemplate(Resp.getAccess_token(), req);
     }
 

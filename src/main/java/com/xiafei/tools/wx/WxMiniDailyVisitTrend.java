@@ -30,7 +30,7 @@ public class WxMiniDailyVisitTrend {
     private static final String URL_PATTERN = "https://api.weixin.qq.com/datacube/getweanalysisappiddailyvisittrend?access_token={0}";
 
     public static void main(String[] args) throws ParseException {
-        WxAccessToken.Resp accessToken = WxAccessToken.getAccessToken("wxe64a21f09e3afe33", "fd62ce60ea3e8b967a1660ef1c2c8d19");
+        WxAccessToken.Resp accessToken = WxAccessToken.getAccessToken("appId", "secret");
         DailyVisitTrend dailyVisitTrend = get(accessToken.getAccess_token(), "20190116");
         System.out.println(dailyVisitTrend);
     }

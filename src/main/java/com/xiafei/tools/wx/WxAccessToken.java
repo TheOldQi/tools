@@ -47,7 +47,7 @@ public class WxAccessToken {
     }
 
     public static void main(String[] args) {
-        Resp resp = getAccessToken("wxe64a21f09e3afe33", "fd62ce60ea3e8b967a1660ef1c2c8d19");
+        Resp resp = getAccessToken("appId", "secret");
         System.out.println("resp:" + resp);
     }
 
