@@ -1,7 +1,7 @@
 package com.xiafei.tools.spider.metalquotation;
 
 import com.xiafei.tools.spider.NoLoginPageGetter;
-import com.xiafei.tools.common.FileUtils;
+import com.xiafei.tools.file.FileUtils;
 import com.xiafei.tools.common.MapUtils;
 import com.xiafei.tools.common.StringUtils;
 import org.jsoup.nodes.Document;

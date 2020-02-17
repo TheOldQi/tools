@@ -19,6 +19,9 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -65,6 +68,8 @@ public class Sftp {
      * SHELL操作连接池.
      */
     private Executor sheelExecutor = Executors.newCachedThreadPool();
+
+    ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
 
 
     private String logPrefix;
@@ -146,6 +151,9 @@ public class Sftp {
         this.poolSize = initSize;
         this.needSize = new AtomicInteger(0);
         this.heartBeatInterval = heartBeatInterval * 1000;
+        if (this.heartBeatInterval > 0) {
+            scheduledExecutorService.scheduleWithFixedDelay(this::keepAlive, 10000, 1000, TimeUnit.MILLISECONDS);
+        }
         logPrefix = userName + "@" + host + ":" + port + ",";
         initPool();
     }
@@ -411,7 +419,7 @@ public class Sftp {
     /**
      * 保持连接可用.
      */
-    public void keepAlive() {
+    private void keepAlive() {
         final long l = System.currentTimeMillis();
         for (int i = 0; i < maxSize; i++) {
             if (!timePool.isEmpty() && (l - timePool.getFirst() > heartBeatInterval)) {

@@ -1,7 +1,7 @@
 package com.xiafei.tools.generatesource;
 
 import com.xiafei.tools.common.Db;
-import com.xiafei.tools.common.FileUtils;
+import com.xiafei.tools.file.FileUtils;
 import com.xiafei.tools.common.StringUtils;
 import com.xiafei.tools.generatesource.enums.DataBaseTypeEnum;
 import com.xiafei.tools.generatesource.template.DaoTemplate;
@@ -73,260 +73,6 @@ public final class SourceGenerator {
             return;
         }
 
-        // 生成客如云风险平台的资源文件
-//        generateKryRisk();
-        // 生成租赁核心的资源文件
-//        generateLease();
-        // 双子座支撑平台资源文件生成
-//        gemini();
-        // 聚合支付交易模块
-//        trade();
-//        securityCenter();
-//        opsLogsEtl();
-        wmsCenter();
-    }
-
-    private static void wmsCenter() {
-        final GenerateSourceParam param = new GenerateSourceParam();
-        param.setCommentsUser("齐霞飞");
-        param.setCommentsSince("JDK 1.8.0");
-        param.setCommentsVersion("1.0.0");
-        param.setDomainDirectory("C:\\code\\meicai\\wms-center\\wms-center-outbound-support\\src\\main\\java\\com\\sprucetec\\wms\\center\\outbound\\pos");
-        param.setDomainPackage("com.sprucetec.wms.center.outbound.pos");
-        param.setDomainSuffix("Po");
-        param.setMapperDirectory("C:\\code\\meicai\\wms-center\\wms-center-outbound-support\\src\\main\\resources\\com\\sprucetec\\wms\\center\\outbound\\mapper");
-        param.setDaoDirectory("C:\\code\\meicai\\wms-center\\wms-center-outbound-support\\src\\main\\java\\com\\sprucetec\\wms\\center\\outbound\\mapper");
-        param.setDaoPackage("com.sprucetec.wms.center.outbound.mapper");
-        // is cover ori file's content
-        param.setCoverFile(true);
-        param.setJavaTime(false);
-        param.setLombok(false);
-        final String schema = "test_db";
-        final String jdbcUrl = MessageFormat.format(CON_STR_LOCAL_TEMPLATE, schema);
-        final String dbUser = DB_USER;
-        final String pwd = DB_USER_PWD;
-
-        final List<GenerateSourceParamItem> itemList = new ArrayList<>();
-
-//        GenerateSourceParamItem table1 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "task_type_def", schema,
-//                "TaskTypeDef", "任务类型定义表");
-//        itemList.add(table1);
-        GenerateSourceParamItem table2 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-                "t_wmc_aps_cross_warehouse_process_quantity", schema,
-                "ApsCrossWarehouseProcessQuantity", "Aps越库加工集量表");
-        itemList.add(table2);
-//        GenerateSourceParamItem table3 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "log_data_template", schema,
-//                "LogData", "日志数据");
-//        itemList.add(table3);
-//
-//        GenerateSourceParamItem table4 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "log_data_group", schema,
-//                "LogDataGroup", "日志数据分组表");
-//        itemList.add(table4);
-
-        param.setItems(itemList);
-        exec(param);
-    }
-
-    private static void opsLogsEtl() {
-        final GenerateSourceParam param = new GenerateSourceParam();
-        param.setCommentsUser("齐霞飞");
-        param.setCommentsSince("JDK 1.8.0");
-        param.setCommentsVersion("1.0.0");
-        param.setDomainDirectory("D:\\self-study\\codes\\self\\ops-logs-etl\\src\\main\\java\\com\\qixiafei\\ops\\logs\\etl\\pos");
-        param.setDomainPackage("com.qixiafei.ops.logs.etl.pos");
-        param.setDomainSuffix("Po");
-        param.setMapperDirectory("D:\\self-study\\codes\\self\\ops-logs-etl\\src\\main\\resources\\mapper\\ops-logs-etl");
-        param.setDaoDirectory("D:\\self-study\\codes\\self\\ops-logs-etl\\src\\main\\java\\com\\qixiafei\\ops\\logs\\etl\\dao");
-        param.setDaoPackage("com.qixiafei.ops.logs.etl.dao");
-        // is cover ori file's content
-        param.setCoverFile(true);
-        param.setJavaTime(false);
-        param.setLombok(true);
-        final String schema = "ops_logs_etl";
-        final String jdbcUrl = MessageFormat.format(CON_STR_LOCAL_TEMPLATE, schema);
-        final String dbUser = DB_USER;
-        final String pwd = DB_USER_PWD;
-
-        final List<GenerateSourceParamItem> itemList = new ArrayList<>();
-
-//        GenerateSourceParamItem table1 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "task_type_def", schema,
-//                "TaskTypeDef", "任务类型定义表");
-//        itemList.add(table1);
-        GenerateSourceParamItem table2 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-                "task_exec_record", schema,
-                "TaskExecRecord", "任务执行记录表");
-        itemList.add(table2);
-//        GenerateSourceParamItem table3 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "log_data_template", schema,
-//                "LogData", "日志数据");
-//        itemList.add(table3);
-//
-//        GenerateSourceParamItem table4 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "log_data_group", schema,
-//                "LogDataGroup", "日志数据分组表");
-//        itemList.add(table4);
-
-        param.setItems(itemList);
-        exec(param);
-    }
-
-    private static void securityCenter() {
-        final GenerateSourceParam param = new GenerateSourceParam();
-        param.setCommentsUser("齐霞飞");
-        param.setCommentsSince("JDK 1.8.0");
-        param.setCommentsVersion("1.0.0");
-        param.setDomainDirectory("C:\\code\\self\\crypto-center\\crypto-center-core\\src\\main\\java\\com\\qixiafei\\security\\center\\core\\domain");
-        param.setDomainPackage("com.qixiafei.security.center.core.domain");
-        param.setDomainSuffix("Po");
-        param.setMapperDirectory("C:\\code\\self\\crypto-center\\crypto-center-core\\src\\main\\resources\\mapper\\crypto-center");
-        param.setDaoDirectory("C:\\code\\self\\crypto-center\\crypto-center-core\\src\\main\\java\\com\\qixiafei\\security\\center\\core\\dao");
-        param.setDaoPackage("com.qixiafei.security.center.core.dao");
-        // is cover ori file's content
-        param.setCoverFile(true);
-        param.setJavaTime(false);
-        param.setLombok(true);
-        final String schema = "security_center";
-        final String jdbcUrl = MessageFormat.format(CON_STR_TEMPLATE, schema);
-        final String dbUser = DB_USER;
-        final String pwd = DB_USER_PWD;
-
-        final List<GenerateSourceParamItem> itemList = new ArrayList<>();
-
-        GenerateSourceParamItem table1 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-                "metadata", schema,
-                "Metadata", "元数据");
-        itemList.add(table1);
-
-        param.setItems(itemList);
-        exec(param);
-    }
-
-    private static void trade() {
-        final GenerateSourceParam param = new GenerateSourceParam();
-        param.setCommentsUser("齐霞飞");
-        param.setCommentsSince("JDK 1.8.0");
-        param.setCommentsVersion("1.0.0");
-        param.setDomainDirectory("C:\\code\\work\\yx\\pay-paas-trade\\pay-paas-trade-domain\\src\\main\\java\\com\\virgo\\finance\\pay\\paas\\trade\\domain");
-        param.setDomainPackage("com.virgo.finance.pay.paas.trade.domain");
-        param.setDomainSuffix("Po");
-        param.setMapperDirectory("C:\\code\\work\\yx\\pay-paas-trade\\pay-paas-trade-web\\src\\main\\resources\\mapper\\pay-paas-trade");
-        param.setDaoDirectory("C:\\code\\work\\yx\\pay-paas-trade\\pay-paas-trade-dao\\src\\main\\java\\com\\virgo\\finance\\pay\\paas\\trade\\dao");
-        param.setDaoPackage("com.virgo.finance.pay.paas.trade.dao");
-        // is cover ori file's content
-        param.setCoverFile(true);
-        param.setJavaTime(false);
-        param.setLombok(true);
-        final String schema = "pay_paas_trade";
-        final String jdbcUrl = MessageFormat.format(CON_STR_TEMPLATE, schema);
-        final String dbUser = DB_USER;
-        final String pwd = DB_USER_PWD;
-
-        final List<GenerateSourceParamItem> itemList = new ArrayList<>();
-
-        GenerateSourceParamItem table1 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-                "trade_sub_order", schema,
-                "TradeSubOrder", "交易子订单表");
-        itemList.add(table1);
-        GenerateSourceParamItem table2 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-                "trade_sub_order_goods", schema,
-                "TradeSubOrderGoods", "交易子订单商品表");
-        itemList.add(table2);
-
-        param.setItems(itemList);
-        exec(param);
-    }
-
-
-    private static void gemini() {
-        final GenerateSourceParam param = new GenerateSourceParam();
-        param.setCommentsUser("齐霞飞");
-        param.setCommentsSince("JDK 1.8.0");
-        param.setCommentsVersion("1.0.0");
-        param.setDomainDirectory("C:\\code\\work\\yx\\gemini-support\\gemini-support-dao\\src\\main\\java\\com\\virgo\\finance\\gemini\\support\\dao\\domain");
-        param.setDomainPackage("com.virgo.finance.gemini.support.dao.domain");
-        param.setDomainSuffix("Po");
-        param.setMapperDirectory("C:\\code\\work\\yx\\gemini-support\\gemini-support-web\\src\\main\\resources\\mapper\\gemini");
-        param.setDaoDirectory("C:\\code\\work\\yx\\gemini-support\\gemini-support-dao\\src\\main\\java\\com\\virgo\\finance\\gemini\\support\\dao");
-        param.setDaoPackage("com.virgo.finance.gemini.support.dao");
-        // is cover ori file's content
-        param.setCoverFile(true);
-        param.setJavaTime(false);
-        param.setLombok(true);
-        final String schema = "gemini";
-        final String jdbcUrl = MessageFormat.format(CON_STR_TEMPLATE, schema);
-        final String dbUser = DB_USER;
-        final String pwd = DB_USER_PWD;
-
-        final List<GenerateSourceParamItem> itemList = new ArrayList<>();
-
-//        GenerateSourceParamItem table1 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "report_merchant", schema,
-//                "ReportMerchant", "商户统计报告表");
-//        itemList.add(table1);
-//        GenerateSourceParamItem table2 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "red_envelope", schema,
-//                "RedEnvelope", "红包表");
-//        itemList.add(table2);
-//        GenerateSourceParamItem table3 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "red_envelope_batch", schema,
-//                "RedEnvelopeBatch", "红包批次表");
-//        itemList.add(table3);
-        GenerateSourceParamItem table4 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-                "lottery_define", schema,
-                "LotteryDefine", "抽奖定义表");
-        itemList.add(table4);
-//        GenerateSourceParamItem table5 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "lottery_prize", schema,
-//                "LotteryPrize", "抽奖奖品表");
-//        itemList.add(table5);
-//        GenerateSourceParamItem table6 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "lottery_prize_pool", schema,
-//                "LotteryPrizePool", "抽奖奖池表");
-//        itemList.add(table6);
-
-        param.setItems(itemList);
-        exec(param);
-    }
-
-    private static void generateLease() {
-        final GenerateSourceParam param = new GenerateSourceParam();
-        param.setCommentsUser("齐霞飞");
-        param.setCommentsSince("JDK 1.8.0");
-        param.setCommentsVersion("1.0.0");
-        param.setDomainDirectory("C:\\code\\local\\yx\\lease-core\\lease-core-domain\\src\\main\\java\\com\\virgo\\finance\\lease\\core\\domain\\po");
-        param.setDomainPackage("com.virgo.finance.lease.core.domain.po");
-        param.setDomainSuffix("Po");
-        param.setMapperDirectory("C:\\code\\local\\yx\\lease-core\\lease-core-web\\src\\main\\resources\\lease\\mappings");
-        param.setDaoDirectory("C:\\code\\local\\yx\\lease-core\\lease-core-dao\\src\\main\\java\\com\\virgo\\finance\\lease\\core\\dao");
-        param.setDaoPackage("com.virgo.finance.lease.core.dao");
-        // is cover ori file's content
-        param.setCoverFile(true);
-        param.setJavaTime(false);
-        param.setLombok(true);
-        final String schema = "lease";
-        final String jdbcUrl = MessageFormat.format(CON_STR_TEMPLATE, schema);
-        final String dbUser = "root";
-        final String pwd = "root";
-
-        final List<GenerateSourceParamItem> itemList = new ArrayList<>();
-
-//        GenerateSourceParamItem table1 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "APPLY_INVOICE", schema,
-//                "ApplyInvoice", "申请单发票信息");
-//        itemList.add(table1);
-        GenerateSourceParamItem table2 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-                "OVERDUE_RECORD", schema,
-                "OverdueRecord", "逾期记录表");
-        itemList.add(table2);
-
-        param.setItems(itemList);
-        exec(param);
-
-
     }
 
     private static void generateKryRisk() {
@@ -334,82 +80,28 @@ public final class SourceGenerator {
         param.setCommentsUser("齐霞飞");
         param.setCommentsSince("JDK 1.8.0");
         param.setCommentsVersion("1.0.0");
-        param.setDomainDirectory("C:\\code\\local\\yx\\kry-risk\\kry-risk-dao\\src\\main\\java\\com\\virgo\\finance\\kry\\risk\\dao\\domains");
-        param.setDomainPackage("com.virgo.finance.kry.risk.dao.domains");
+        param.setDomainDirectory("C:\\directory\\src\\main\\java\\com\\virgo\\finance\\sample\\dao\\domains");
+        param.setDomainPackage("com.virgo.finance.sample.dao.domains");
         param.setDomainSuffix("Po");
-        param.setMapperDirectory("C:\\code\\local\\yx\\kry-risk\\kry-risk-api\\src\\main\\resources\\mapper\\risk");
-        param.setDaoDirectory("C:\\code\\local\\yx\\kry-risk\\kry-risk-dao\\src\\main\\java\\com\\virgo\\finance\\kry\\risk\\dao");
-        param.setDaoPackage("com.virgo.finance.kry.risk.dao");
+        param.setMapperDirectory("C:\\directory\\src\\main\\resources\\mapper\\risk");
+        param.setDaoDirectory("C:\\directory\\src\\main\\java\\com\\virgo\\finance\\kry\\risk\\dao");
+        param.setDaoPackage("com.virgo.finance.sample.dao");
         // is cover ori file's content
         param.setCoverFile(true);
         param.setJavaTime(false);
         param.setLombok(true);
-        final String schema = "kry_risk";
+        final String schema = "test_schema";
         final String jdbcUrl = MessageFormat.format(CON_STR_TEMPLATE, schema);
         String dbUser = DB_USER;
         String pwd = DB_USER_PWD;
 
         List<GenerateSourceParamItem> itemList = new ArrayList<>();
 
-//        GenerateSourceParamItem table1 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "SEND_KRY_STATUS", schema,
-//                "SendKryStatus", "发送客如云请求状态表");
-//        itemList.add(table1);
-//
-//        GenerateSourceParamItem table2 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "order_day", schema,
-//                "OrderDay", "有效订单日统计表");
-//        itemList.add(table2);
-//
-//        GenerateSourceParamItem table3 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "device_visit_day", schema,
-//                "DeviceVisitDay", "客户端访问信息表");
-//        itemList.add(table3);
-//
-//        GenerateSourceParamItem table4 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "device_log_day", schema,
-//                "DeviceLogDay", "设备登录信息表-日统计");
-//        itemList.add(table4);
-//
-//        GenerateSourceParamItem table5 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "device_fault_day", schema,
-//                "DeviceFaultDay", "设备故障信息日统计表");
-//        itemList.add(table5);
-//
-//        GenerateSourceParamItem table6 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-//                "compitation_rank_day", schema,
-//                "CompitationRankDay", "商铺竞争力信息日统计表");
-//        itemList.add(table6);
-//
-//        GenerateSourceParamItem table7 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL,jdbcUrl,dbUser, pwd,
-//                "refound_order_day", schema,
-//            "RefoundOrderDay", "退款订单日统计表");
-//        itemList.add(table7);
+        GenerateSourceParamItem table1 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
+                "table_1", schema,
+                "Table1", "表1");
+        itemList.add(table1);
 
-//        GenerateSourceParamItem table8 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL,jdbcUrl,dbUser, pwd,
-//                "member_day", schema,
-//            "MemberDay", "客户信息日统计表");
-//        itemList.add(table8);
-//        GenerateSourceParamItem table9 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL,jdbcUrl,dbUser, pwd,
-//                "CALL_BACK_IDEMPOTENT", schema,
-//            "CallBackIdempotent", "回调幂等表");
-//        itemList.add(table9);
-//        GenerateSourceParamItem table10 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL,jdbcUrl,dbUser, pwd,
-//                "EFFECTIVE_COMMERCIAL", schema,
-//            "EffectiveCommercial", "有效商户号表");
-//        itemList.add(table10);
-//        GenerateSourceParamItem table11 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL,jdbcUrl,dbUser, pwd,
-//                "risk_indicator_all", schema,
-//            "RiskIndicatorAll", "风控指标主表");
-//        itemList.add(table11);
-//        GenerateSourceParamItem table12 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL,jdbcUrl,dbUser, pwd,
-//                "risk_indicator_WTW", schema,
-//            "RiskIndicatorWtw", "风控指标环比表");
-//        itemList.add(table12););
-        GenerateSourceParamItem table13 = new GenerateSourceParamItem(DataBaseTypeEnum.MYSQL, jdbcUrl, dbUser, pwd,
-                "EFFECTIVE_COMMERCIAL_ORDERS", schema,
-                "EffectiveCommercialOrders", "有效商户号关联的申请单表");
-        itemList.add(table13);
         param.setItems(itemList);
         exec(param);
 

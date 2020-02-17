@@ -1,23 +1,14 @@
-package com.xiafei.tools.common;
+package com.xiafei.tools.file;
 
+import com.xiafei.tools.common.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.core.io.PathResource;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * <P>Description:  文件操作工具类. </P>
@@ -94,6 +85,8 @@ public final class FileUtils {
         }
 
     }
+
+
 
     /**
      * 将字符串输出到文件.
@@ -175,4 +168,62 @@ public final class FileUtils {
         }
         return null;
     }
+    public static void appendLine(List<List<String>> exportData, String filepath,final String separator) {
+        FileOutputStream buffCvsWriter = null;
+        try {
+            buffCvsWriter = new FileOutputStream(new File(filepath), true);
+            // 将body数据写入表格
+            for (List<String> lineList : exportData) {
+                final StringBuilder line = new StringBuilder();
+                for (String col : lineList) {
+                    line.append(col).append(separator);
+                }
+                line.deleteCharAt(line.length() - 1).append("\r\t");
+                final byte[] lineBytes = line.toString().getBytes(StandardCharsets.UTF_8);
+                buffCvsWriter.write(lineBytes);
+                buffCvsWriter.flush();
+            }
+            // 刷新缓冲
+            buffCvsWriter.getFD().sync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 释放资源
+            if (buffCvsWriter != null) {
+                try {
+                    buffCvsWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void readByLine(Consumer<String> lineHandler, final String filePath, int skipLines) {
+        BufferedReader br = null;
+
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (skipLines > 0) {
+                    skipLines--;
+                    continue;
+                }
+                lineHandler.accept(line);
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
 }

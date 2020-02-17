@@ -100,13 +100,4 @@ public class SftpConfig {
         return sftp;
     }
 
-    /**
-     * 心跳位置sftp连接有效.
-     */
-    @Scheduled(fixedDelay = 10000)
-    public void heartBeat() {
-        for (Map.Entry<String, Sftp> entry : BEAN_MAP.entrySet()) {
-            entry.getValue().keepAlive();
-        }
-    }
 }

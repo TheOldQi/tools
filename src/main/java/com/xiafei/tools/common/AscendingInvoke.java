@@ -1,5 +1,6 @@
 package com.xiafei.tools.common;
 
+import com.xiafei.tools.file.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

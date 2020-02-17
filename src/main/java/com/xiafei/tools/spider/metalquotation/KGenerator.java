@@ -2,7 +2,7 @@ package com.xiafei.tools.spider.metalquotation;
 
 import com.xiafei.tools.common.BeanUtils;
 import com.xiafei.tools.common.DateUtils;
-import com.xiafei.tools.common.FileUtils;
+import com.xiafei.tools.file.FileUtils;
 import com.xiafei.tools.common.MapUtils;
 import com.xiafei.tools.common.StringUtils;
 
